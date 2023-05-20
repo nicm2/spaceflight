@@ -26,19 +26,10 @@
       
     <div class="wrapper">
 
-      <section>
-        <!-- nighthawk coding society has altered arrangement and inserted navigation that is updated in independent file -->
         <div id="title">
-          <h1><a href={{ site.gitorg }}>{{ site.title | default: site.github.repository_name }}</a></h1>
-          <p>{{ site.description | default: site.github.project_tagline }}</p>
           <hr>
           {% include home.html %}
         </div>
-
-        <!-- this is Jekyll magic, each md file in site will be inserted here -->
-        {{ content }}
-
-      </section>
 
     </div>
   </body>
