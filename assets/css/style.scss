@@ -24,7 +24,7 @@
   @font-face {
     font-family: 'SpaceFont';
     src: url('/assets/fonts/SPACEBAR.ttf') format('truetype');
-  }
+  }  
 
   h1 {
       font-family: 'SpaceFont', sans-serif;
@@ -39,8 +39,14 @@
     align-items: center;
   }
   
+  @font-face {
+    font-family: 'StartFont';
+    src: url('/assets/fonts/title.ttf') format('truetype');
+  }
+
   .button {
-    padding: 10px 20px;
+    font-family: 'StartFont', sans-serif;
+    padding: 30px 30px;
     font-size: 40px;
     background-color: transparent;
     color: #ffffff;
