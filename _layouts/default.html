@@ -4,6 +4,7 @@
   found through GitHub Pages Themes
  -->
 <html lang="{{ site.lang | default: "en-US" }}">
+  {% if page.url != "html/description" %} 
   <head>
 
     <meta charset="utf-8">
@@ -21,21 +22,28 @@
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     {% include head-custom.html %}
-    <style>
-      body{
-        background-image: url(/assets/images/titlescreen.jpg)
-      }
-    </style>
+
   </head>
   <body>
-      
+   
     <div class="wrapper">
 
+      <section>
+        <!-- nighthawk coding society has altered arrangement and inserted navigation that is updated in independent file -->
         <div id="title">
+          <h1><a href={{ site.gitorg }}>{{ site.title | default: site.github.repository_name }}</a></h1>
+          <p>{{ site.description | default: site.github.project_tagline }}</p>
           <hr>
           {% include home.html %}
         </div>
 
+        <!-- this is Jekyll magic, each md file in site will be inserted here -->
+        {{ content }}
+
+      </section>
+
     </div>
+
   </body>
+  {% endif %}
 </html>
