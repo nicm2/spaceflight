@@ -1,4 +1,4 @@
-theme: jekyll-hacker
+theme: jekyll-theme-midnight
 title: "Escape the Earth"
 description: "Build a rocket to launch out of earth's atmosphere and travel into space"
 gitorg: "https://github.com/nicm2/spaceflight"
