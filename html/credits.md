@@ -18,7 +18,7 @@
 
 | Name | Github Profile |
 | :---- | :---- |
-| Nicolas Mounier | [@nicm2](https://github.com/nicm2) |
-| Nicolas Mounier | [@nicm2](https://github.com/nicm2) |
-| Nicolas Mounier | [@nicm2](https://github.com/nicm2) |
-| Nicolas Mounier | [@nicm2](https://github.com/nicm2) |
+| Nicolas Mounier | [link](https://github.com/nicm2) |
+| Amadeu Behrend | [link]() |
+| Dashiell Penning | [link]() |
+| Aarav Yadavv | [link]() |
