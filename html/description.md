@@ -26,6 +26,8 @@
       <p>If your rocket fails to reach orbit, it means the launch has failed.</p>
     </div>
 
+<br>
+
 # Triton Hacks
 
 <br>

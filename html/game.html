@@ -1,0 +1,216 @@
+<html>
+    <head>
+        <style>
+            /* html, body {
+                height: 100%;
+                margin: 0;
+            } */
+            #c   {
+            width: 100%;
+            height: 100%;
+            display: block;
+            /* background: url(resources/images/bigbackgroundimage2.png) no-repeat center center ; */
+            background-color: #000000;
+            background-size: cover;
+            }
+            #playspace {
+                display:flex;
+                flex-wrap: nowrap;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: flex-start;
+            }
+            #buttons {
+                display:flex;
+                flex-wrap: nowrap;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="playspace">
+            <canvas id="c" width="600", height="600"></canvas>
+            <div id="buttons">
+                <div>
+                    <button id="addFuel">Add Fuel</button>
+                </div>
+                <div>
+                    <button id="launchButton">Launch!</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.152.2/examples/jsm/"
+          }
+        }
+    </script>
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        // function createBooster(){
+        //     const material = new THREE.MeshBasicMaterial( 
+        //     { color: 0x888B8D,
+        //     //   roughness: 0.5,
+        //     //   metalness: 0.5,
+        //     } );
+        //     const cube = new THREE.Mesh(geometry, material);
+        //     scene.add( cube );
+        // }
+        const rocket = new THREE.Object3D()
+        // rocket.position.set(0, 0, -10)
+        let rocketFuels = 1;
+
+        const rocketMaterial = new THREE.MeshBasicMaterial( 
+            { color: 0x888B8D,
+            //   roughness: 0.5,
+            //   metalness: 0.5,
+            } );
+
+        function addMediumFuel(){
+            const geometry = new THREE.CylinderGeometry( 1, 1, 1 );
+            // const material = new THREE.MeshBasicMaterial( 
+            // { color: 0x888B8D,
+            // //   roughness: 0.5,
+            // //   metalness: 0.5,
+            // } );
+            const cube = new THREE.Mesh(geometry, rocketMaterial);
+            rocket.add(cube);
+            cube.position.y += rocketFuels
+            payload.position.y++
+            rocketFuels++
+        }
+
+        const scene = new THREE.Scene();
+        // const camera = new THREE.PerspectiveCamera( 75, canvas.innerWidth / canvas.innerHeight, 0.1, 1000 );
+
+        const canvas = document.getElementById("c")
+        const renderer = new THREE.WebGLRenderer({
+            canvas,
+            alpha: true,
+            antialias:true
+        });
+        // renderer.setSize( window.innerWidth, window.innerHeight );
+        // document.body.appendChild( renderer.domElement );
+
+        const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000)
+        renderer.setSize(canvas.width, canvas.height)
+        // document.body.appendChild( renderer.domElement );
+
+
+        const payloadGeometry = new THREE.ConeGeometry( 1, 1, 16 );
+        const payloadMaterial = new THREE.MeshBasicMaterial( 
+            { color: 0xFFFFFF,
+            //   roughness: 0.5,
+            //   metalness: 0.5,
+            } );
+        const payload = new THREE.Mesh( payloadGeometry, payloadMaterial );
+        rocket.add( payload );
+        payload.position.y += 1
+
+        const booster = new THREE.Object3D()
+
+        const boosterBaseGeo = new THREE.CylinderGeometry(1, 1, 1)
+        const boosterBase = new THREE.Mesh(boosterBaseGeo, rocketMaterial)
+        
+        const boosterBoosterGeo = new THREE.ConeGeometry(0.5, 0.5, 6)
+        const boosterBoosterMat = new THREE.MeshBasicMaterial(
+            {
+                color: 0x36454F
+            }
+        )
+        const boosterBooster = new THREE.Mesh(boosterBoosterGeo, boosterBoosterMat)
+        booster.add(boosterBase)
+        booster.add(boosterBooster)
+        // boosterBase.position.y -= 1
+        boosterBooster.position.y -= 0.5
+        rocket.add(booster)
+
+        const earthGeometry = new THREE.SphereGeometry(1000, 64, 64)
+        const loader = new THREE.TextureLoader()
+        const earthMaterial = new THREE.MeshBasicMaterial({
+            color: 0x228B22,
+            // map: loader.load("resources/images/bigbackgroundimage2.png")
+        })
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial)
+
+        scene.add(earth)
+        earth.position.set(0, -1010, 0)
+        earth.rotation.z += 0.5
+
+        const backdropGeometry = new THREE.SphereGeometry(100, 32, 32)
+        const backdropMaterial = new THREE.MeshBasicMaterial({
+            map: loader.load("resources/images/bgtest2.png"),
+            side: THREE.BackSide
+        })
+        const backdrop = new THREE.Mesh(backdropGeometry, backdropMaterial)
+        scene.add(backdrop)
+        // backdrop.position.set(0, 0, -700)
+        // backdrop.rotation.z += Math.PI
+
+        // const light = new THREE.DirectionalLight(0xFFFFFF, 1);
+        // const light = new THREE.AmbientLight(0xFFFFFF, 1);
+        // light.position.set(0, 10, -1);
+        // scene.add(light);
+        camera.position.z = 5;
+        // document.addEventListener("keydown", () => {
+        //     addMediumFuel()
+        //     renderer.render( scene, camera );
+        // })
+        const cubePos = new THREE.Vector3()
+        let posChange = 0.01
+
+        // const cubeLoader = new THREE.TextureLoader();
+        // const texture = cubeLoader.load(
+        //     // 'resources/images/bigbackgroundimage2.png',
+        //     // "resources/images/bgtest2.png",
+        //     "resources/images/panorama_image.png",
+        //     () => {
+        //     const rtg = new THREE.SphereGeometry(1000, 128, 128);
+        //     const rtm = new THREE.MeshBasicMaterial(
+        //         {
+        //             map: "resources/images/bigbackgroundimage2.png",
+        //             side: THREE.BackSide
+        //         }
+        //     )
+        //     const rt = new THREE.Mesh(rtg, rtm)
+        //     scene.add(rt)
+        //     // rt.fromEquirectangularTexture(renderer, texture);
+        //     // scene.background = rt.texture;
+        //     });
+        scene.add(rocket)
+        function render(){
+        posChange *= 1.01
+        rocket.position.y += posChange;
+        rocket.position.x += posChange * 0.1;
+        // camera.position.y += posChange;
+        // camera.position.x += 0.01;
+        camera.lookAt(rocket.getWorldPosition(cubePos))
+        renderer.render( scene, camera );
+        requestAnimationFrame(render)
+        }
+        renderer.render( scene, camera );
+        // document.addEventListener("mousedown", () => {requestAnimationFrame(render)})
+        let fuelButton = document.getElementById("addFuel")
+        fuelButton.onclick = () => {
+
+            addMediumFuel();
+            renderer.render(scene, camera)
+        }
+        let launchButton = document.getElementById("launchButton")
+        launchButton.addEventListener("click", () => {
+            requestAnimationFrame(render)
+            launchButton.remove()
+            fuelButton.remove()
+        })
+    </script>
+    <script>
+
+    </script>
+</html>
