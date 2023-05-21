@@ -98,6 +98,7 @@
             table,
             td {
                 border: 1px solid #000000;
+                color: white;
             }
 
         </style>
@@ -459,7 +460,11 @@
             launchPad.rotation.z = launchPadRot
             requestAnimationFrame(render)
             launchButton.remove()
-            // fuelButton.remove()
+            fuelButton.remove()
+            launchAngleRange.remove()
+            launchAngleText.remove()
+            payloadWeightRange.remove()
+            payloadWeightText.remove()
         })
         let launchAngleRange = document.getElementById("launchAngleRange")
         let launchAngleText = document.getElementById("launchAngleText")
