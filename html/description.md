@@ -1,8 +1,8 @@
-# Tutorial
+<h1>Tutorial</h1>
 
 <br>
 
-## How-To-Play
+<h2>How-To-Play</h2>
 
 
   <div class ="customization">
@@ -28,14 +28,12 @@
 
 <br>
 
-# Triton Hacks
+<h1>Triton Hacks</h1>
 
 <br>
 
-## Real-World Issue
+<h2>Real-World Issue</h2>
 
 <br>
 
-## Technical Components
-
-## 
+<h2>Technical Components</h2>
