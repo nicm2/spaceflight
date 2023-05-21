@@ -1,4 +1,4 @@
-theme: jekyll-theme-midnight
+remote_theme: pages-themes/tactile@v0.2.0
 title: "Escape the Earth"
 gitorg: "https://github.com/nicm2/spaceflight"
 google_analytics:
