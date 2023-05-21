@@ -277,7 +277,7 @@
         
         const earthMaterial = new THREE.MeshBasicMaterial({
             // color: 0x228B22,
-            map: loader.load("resources/images/8k_earth_daymap.jpg")
+            map: loader.load("/spaceflight/resources/images/8k_earth_daymap.jpg")
         })
         const earth = new THREE.Mesh(earthGeometry, earthMaterial)
 
@@ -290,7 +290,7 @@
         const backdropGeometry = new THREE.SphereGeometry(RADIUS_EARTH * 2, 32, 32)
 
 
-        loader.load('resources/images/bgtest2.png', (texture) => {
+        loader.load('/spaceflight/resources/images/bgtest2.png', (texture) => {
             const backdropMaterial = new THREE.MeshBasicMaterial({
                 map: texture,
                 side: THREE.BackSide
