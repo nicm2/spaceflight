@@ -104,10 +104,11 @@
     </head>
     <body>
         <div id="playspace">
-            <!-- <div style="display: grid; ">
-
-            </div> -->
-            <canvas id="c" width="600", height="600"></canvas>
+            <div style="display: grid">
+                <canvas id="c" width="600", height="600" style="grid-column: 1; grid-row: 1;"></canvas>
+                <div style="display: none; grid-column: 1; grid-row: 1;" id="losescreen"><h1 style="color:red">You Lose!</h1></div>
+                <div style="display: none; grid-column: 1; grid-row: 1;" id="winscreen"><h1 style="color:green">You Win!</h1></div>
+            </div>
             <div id="buttons">
                 <div>
                     <button id="addFuel">Add Fuel</button>
@@ -271,7 +272,7 @@
         boosterBooster.position.y -= 5
         rocket.add(booster)
 
-        const earthGeometry = new THREE.SphereGeometry(RADIUS_EARTH, 128, 128)
+        const earthGeometry = new THREE.SphereGeometry(RADIUS_EARTH, 64, 64)
         const loader = new THREE.TextureLoader()
         
         const earthMaterial = new THREE.MeshBasicMaterial({
@@ -386,8 +387,8 @@
         function render(){
             controls.update();
             i++
-            m = f + d
-
+            m = f + d + p
+            console.log(m)
             theta = Math.atan(y / x)
             if(f > 0){
                 f = f - 10000 * t
@@ -396,7 +397,7 @@
                 ay = ((-398345740000000) * Math.sin(theta) / (x * x + y * y) + (31250000 * Math.sin(phi)) / m )
             } else {
                 f = 0
-                m = f + d
+                m = f + d + p
                 rocket.remove(boosterAnim)
                 ax = ((-398345740000000) * Math.cos(theta) / (x * x + y * y))
                 ay = ((-398345740000000) * Math.sin(theta) / (x * x + y * y))
@@ -421,11 +422,18 @@
             tableAX.innerHTML = ax
             tableAY.innerHTML = ay
 
-            if(rocket.position.y < 50){
+            if(rocket.position.y < 200 && rocket.position.x < 200){
                 camera.lookAt(rocket.getWorldPosition(cubePos))
             } else {
                 camera.lookAt(rocket.getWorldPosition(cubePos))
                 rocket.add(camera)
+            }
+
+            if(((vx * vx + vy * vy) > 125440000)){
+                document.getElementById("losescreen").style.display = "block"
+            }
+            if( (x < -10 || y - RADIUS_EARTH < -100)){
+                document.getElementById("losescreen").style.display = "block"
             }
 
             renderer.render( scene, camera );
