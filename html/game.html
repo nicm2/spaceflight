@@ -91,6 +91,10 @@
                 color:yellow;
             }
 
+            .hidden {
+                display: none;
+            }
+
         </style>
     </head>
     <body>
@@ -115,6 +119,15 @@
                 </div>
             </div>
         </div>
+        <script>
+            document.getElementById("launchButton").addEventListener("click", function() {
+                // Hide the buttons and sliders
+                document.getElementById("addFuel").classList.add("hidden");
+                document.getElementById("angle").classList.add("hidden");
+                document.getElementById("weight").classList.add("hidden");
+                document.getElementById("stats").classList.remove("hidden");
+            });
+        </script>
     </body>
     <script type="importmap">
         {
