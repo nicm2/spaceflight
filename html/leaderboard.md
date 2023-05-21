@@ -1,6 +1,19 @@
 <html>
 <head>
   <title>Night Mode Leaderboard</title>
+  <style>
+  @font-face {
+      font-family: 'StartFont';
+      src: url("/spaceflight/assets/fonts/title.ttf") format('truetype');
+    }
+  
+    h1 {
+      font-family: 'StartFont', sans-serif;
+    }
+    h2 {
+      font-family: 'StartFont', sans-serif;
+    }
+</style>
 </head>
 <body>
   <div class="container">
