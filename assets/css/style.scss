@@ -5,7 +5,6 @@
 
 /* "row style" is flexible size and aligns pictures in center */
 .row {
-    align-items: center;
     display: flex;
   }
   
@@ -25,12 +24,6 @@
     src: url('/assets/fonts/SPACEBAR.ttf') format('truetype');
   }  
 
-  h1 {
-      font-family: 'SpaceFont', sans-serif;
-      font-size: 56px;
-      color: #fff;
-      text-shadow: 2px 2px 4px #000;
-  }
   
   .button-container {
     display: flex;
