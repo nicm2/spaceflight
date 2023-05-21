@@ -52,11 +52,44 @@
                 background-color: rgb(72, 40, 130);
               }
 
-            #addFuel{
-                background-color: red;
+            @font-face {
+                font-family: 'StartFont';
+                src: url('/assets/fonts/title.ttf') format('truetype');
             }
 
+            #addFuel{
+                font-family: 'StartFont', sans-serif;
+                background-color: grey;
+                font-size:30px;
+                margin-top: 50px;
+                margin-bottom: 20px;
+                margin-left:30px;
+            }
+            
+            #addFuel:hover {
+                color: yellow; /* Change text color on hover */
+                outline: none; /* Remove outline/border around text */
+              }
 
+            #launchButton{
+                font-family: 'StartFont', sans-serif;
+                background-color: lightgreen;
+                font-size:40px;
+                margin-left: 30px;
+                margin-top:80px;
+            }
+
+            #launchButton:hover {
+                color: yellow; /* Change text color on hover */
+                outline: none; /* Remove outline/border around text */
+              }
+            
+            #angle, #weight {
+                margin-bottom: 20px;
+                margin-left:30px;
+                font-family: 'StartFont', sans-serif;
+                color:yellow;
+            }
 
         </style>
     </head>
@@ -66,6 +99,16 @@
             <div id="buttons">
                 <div>
                     <button id="addFuel">Add Fuel</button>
+                </div>
+                <div id="angle">
+                    <p>Launch Angle</p>
+                    <input type="range" id="launchAngleRange" min="0" max="90">
+                    <input type="text" id="launchAngleText">
+                </div>
+                <div id="weight">
+                    <p>Payload Weight</p>
+                    <input type="range" id="payloadWeightRange" min="0" max="20000">
+                    <input type="text" id="payloadWeightText">
                 </div>
                 <div>
                     <button id="launchButton">Launch!</button>
@@ -130,12 +173,12 @@
         // renderer.setSize( window.innerWidth, window.innerHeight );
         // document.body.appendChild( renderer.domElement );
 
-        const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 1000)
+        const camera = new THREE.PerspectiveCamera(75, canvas.width / canvas.height, 0.1, 2000)
         renderer.setSize(canvas.width, canvas.height)
         // document.body.appendChild( renderer.domElement );
 
 
-        const payloadGeometry = new THREE.ConeGeometry( 1, 1, 16 );
+        const payloadGeometry = new THREE.ConeGeometry( 0.8, 0.5, 16 );
         const payloadMaterial = new THREE.MeshBasicMaterial( 
             { color: 0xFFFFFF,
             //   roughness: 0.5,
@@ -143,7 +186,17 @@
             } );
         const payload = new THREE.Mesh( payloadGeometry, payloadMaterial );
         rocket.add( payload );
-        payload.position.y += 1
+        payload.position.y += 1.25
+
+        const payloadBottomGeometry = new THREE.CylinderGeometry( 0.8, 1, 0.5, 16 );
+        const payloadBottomMaterial = new THREE.MeshBasicMaterial( 
+            { color: 0xFFFFFF,
+            //   roughness: 0.5,
+            //   metalness: 0.5,
+            } );
+        const payloadBottom = new THREE.Mesh( payloadBottomGeometry, payloadBottomMaterial );
+        rocket.add( payloadBottom );
+        payloadBottom.position.y += 0.75
 
         const booster = new THREE.Object3D()
 
@@ -172,16 +225,26 @@
         const earth = new THREE.Mesh(earthGeometry, earthMaterial)
 
         scene.add(earth)
-        earth.position.set(0, -1010, 0)
+        earth.position.set(0, -1001.5, 0)
         earth.rotation.z += 0.5
 
-        const backdropGeometry = new THREE.SphereGeometry(100, 32, 32)
+        const backdropGeometry = new THREE.SphereGeometry(1000, 32, 32)
         const backdropMaterial = new THREE.MeshBasicMaterial({
             map: loader.load("resources/images/bgtest2.png"),
             side: THREE.BackSide
         })
         const backdrop = new THREE.Mesh(backdropGeometry, backdropMaterial)
         scene.add(backdrop)
+
+        const launchPadGeometry = new THREE.BoxGeometry(4, 1, 4)
+        const launchPadMat = new THREE.MeshBasicMaterial(
+            {
+                color: 0xD2D1CD
+            }
+        )
+        const launchPad = new THREE.Mesh(launchPadGeometry, launchPadMat)
+        rocket.add(launchPad)
+        launchPad.position.y -= 1.25
         // backdrop.position.set(0, 0, -700)
         // backdrop.rotation.z += Math.PI
 
@@ -222,7 +285,13 @@
         rocket.position.x += posChange * 0.1;
         // camera.position.y += posChange;
         // camera.position.x += 0.01;
-        camera.lookAt(rocket.getWorldPosition(cubePos))
+        if(rocket.position.y < 5){
+            camera.lookAt(rocket.getWorldPosition(cubePos))
+        } else {
+            // if(!rocket.children.contains(camera))
+            camera.lookAt(rocket.getWorldPosition(cubePos))
+            rocket.add(camera)
+        }
         renderer.render( scene, camera );
         requestAnimationFrame(render)
         }
@@ -235,11 +304,60 @@
             renderer.render(scene, camera)
         }
         let launchButton = document.getElementById("launchButton")
+        let launchPadPos = new THREE.Vector3()
         launchButton.addEventListener("click", () => {
+            launchPadPos = launchPad.getWorldPosition(launchPadPos)
+            let launchPadRot = rocket.rotation.z
+            scene.add(launchPad)
+            launchPad.position.set(launchPadPos.x, launchPadPos.y, launchPadPos.z)
+            launchPad.rotation.z = launchPadRot
             requestAnimationFrame(render)
             launchButton.remove()
             fuelButton.remove()
         })
+        let launchAngleRange = document.getElementById("launchAngleRange")
+        let launchAngleText = document.getElementById("launchAngleText")
+
+        launchAngleRange.value = 0
+        launchAngleText.value = 0
+
+        let payloadWeightRange = document.getElementById("payloadWeightRange")
+        let payloadWeightText = document.getElementById("payloadWeightText")
+
+        payloadWeightText.value = 16667
+
+        launchAngleRange.addEventListener("input", () => {
+            let value = launchAngleRange.value
+            launchAngleText.value = value
+            rocket.rotation.z = -value * Math.PI / 180
+            renderer.render(scene, camera)
+        })
+        launchAngleText.addEventListener("input", () => {
+            let value = launchAngleText.value
+            launchAngleRange.value = value
+            rocket.rotation.z = -value * Math.PI / 180
+            renderer.render(scene, camera)
+        })
+
+        payloadWeightRange.addEventListener("input", () => {
+            let value = payloadWeightRange.value
+            payloadWeightText.value = value
+            payload.geometry.dispose();
+            payload.geometry = new THREE.ConeGeometry(value/payloadWeightRange.max, 0.5, 16);
+            payloadBottom.geometry.dispose();
+            payloadBottom.geometry = new THREE.CylinderGeometry(value/payloadWeightRange.max, 1, 0.5, 16);
+            renderer.render(scene, camera)
+        })
+        payloadWeightText.addEventListener("input", () => {
+            let value = payloadWeightText.value
+            payloadWeightRange.value = value
+            payload.geometry.dispose();
+            payload.geometry = new THREE.ConeGeometry(value/payloadWeightRange.max, 0.5, 16);
+            payloadBottom.geometry.dispose();
+            payloadBottom.geometry = new THREE.CylinderGeometry(value/payloadWeightRange.max, 1, 0.5, 16);
+            renderer.render(scene, camera)
+        })
+        
     </script>
     <script>
 
