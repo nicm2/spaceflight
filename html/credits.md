@@ -12,9 +12,9 @@
     }
 </style>
 
-<h2> Created By: <h2>
+## Created By: 
 
-<h3> Triton Hackers -> <h3>
+### Triton Hackers -> 
 
 | Name | Github Profile |
 | :---- | :---- |
