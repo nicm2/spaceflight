@@ -41,13 +41,3 @@
     </div>
 
 <br>
-
-<h1>Triton Hacks</h1>
-
-<br>
-
-<h2>Real-World Issue</h2>
-
-<br>
-
-<h2>Technical Components</h2>
